@@ -1,8 +1,7 @@
 # Requisitos Funcionais (RF)
 
 
-
-*### RF01 — Login de usuário
+### RF01 — Login de usuário
 O sistema deve permitir o login individualizado de clientes com e-mail e senha.
 
 ### RF02 — Alteração de senha
