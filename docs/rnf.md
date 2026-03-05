@@ -3,7 +3,7 @@
 ### RNF01 — Segurança e Privacidade 
 O sistema deve garantir o isolamento total dos dados; um cliente jamais poderá acessar contratos, faturas ou dados de outro cliente.
   
-*### RNF02 — Usabilidade e Responsividade
+### RNF02 — Usabilidade e Responsividade
 A interface web deve ser responsiva, adaptando-se adequadamente para visualização em computadores, tablets e smartphones.
   
 ### RNF03 — Desempenho
