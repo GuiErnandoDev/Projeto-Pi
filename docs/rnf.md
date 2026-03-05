@@ -13,4 +13,4 @@ O carregamento dos dashboards e gráficos não deve ultrapassar 5 segundos em um
 O sistema deve ser intuitivo, com fontes legíveis e contrastes adequados, visando facilidade de uso para clientes de diversas idades.
   
 ### RNF05 — Segurança
-As senhas devem ser armazenadas usando hash seguro
+As senhas devem ser armazenadas usando hash seguro.
