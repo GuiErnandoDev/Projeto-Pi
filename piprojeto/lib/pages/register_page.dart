@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
-import 'register_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  // Controladores para capturar o que o usuário digita
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
+  final TextEditingController _confirmarSenhaController = TextEditingController();
 
-  // Estados dos inputs
   bool _senhaOculta = true;
-  bool _lembrarSenha = false;
+  bool _confirmarSenhaOculta = true;
 
-  // Definição das cores da marca (ajustadas conforme a imagem de login)
-  static const Color azulFundoTopo = Color(0xFF67E6DC); // Ciano claro do degradê
-  static const Color azulFundoBase = Color(0xFFC9F7F1); // Ciano quase branco
-  static const Color verdeBotao = Color(0xFFD4E157);   // Amarelo esverdeado
-  static const Color textoPrincipal = Color(0xFF131A2D); // Quase preto/azul escuro
-  static const Color textoSecundario = Color(0xFF767F8D); // Cinza para labels
-  static const Color azulLink = Color(0xFF3B67D3);       // Azul para links
+  static const Color azulFundoTopo = Color(0xFF67E6DC);
+  static const Color azulFundoBase = Color(0xFFC9F7F1);
+  static const Color verdeBotao = Color(0xFFD4E157);
+  static const Color textoPrincipal = Color(0xFF131A2D);
+  static const Color textoSecundario = Color(0xFF767F8D);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Fundo com Degradê conforme imagem
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -40,29 +35,23 @@ class _LoginPageState extends State<LoginPage> {
               azulFundoTopo,
               azulFundoBase,
             ],
-            stops: [0.0, 0.4], // Ajuste onde o degradê começa a clarear
+            stops: [0.0, 0.4],
           ),
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            // Permite rolar a tela se o teclado abrir
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
                 const SizedBox(height: 60),
-
-                // --- ÁREA DA LOGO ---
-                // Para ficar igual à imagem, use um Image.asset() com fundo transparente.
-                // Exemplo: Image.asset('assets/logo_branca.png', height: 80),
                 Center(
                   child: SizedBox(
-                    width: 340, // Ajuste a largura conforme o formato da sua logo
-                    height: 160, // Ajuste a altura conforme necessário
+                    width: 340,
+                    height: 160,
                     child: Image.asset(
-                      'assets/Horizontal Padrão Branco.png', // CAMINHO DO SEU ARQUIVO
+                      'assets/Horizontal Padrão Branco.png',
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) {
-                        // Caso a imagem falhe, mostra o texto para não ficar vazio
                         return const Center(
                           child: Text(
                             'ATIVVO',
@@ -73,14 +62,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 50),
-
-                // --- CARD BRANCO DO FORMULÁRIO ---
                 Container(
                   padding: const EdgeInsets.all(32),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9), // Leve transparência
+                    color: Colors.white.withOpacity(0.9),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
@@ -93,10 +79,9 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Título "Login"
                       const Center(
                         child: Text(
-                          'Login',
+                          'Registrar',
                           style: TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.w900,
@@ -105,8 +90,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 32),
-
-                      // --- Campo Email ---
                       const Text(
                         'Email:',
                         style: TextStyle(
@@ -122,8 +105,6 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: _inputStyle(),
                       ),
                       const SizedBox(height: 20),
-
-                      // --- Campo Senha ---
                       const Text(
                         'Senha:',
                         style: TextStyle(
@@ -152,84 +133,54 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
-
-                      // --- Lembrar Senha e Esqueceu a Senha ---
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Checkbox Lembrar Senha
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: Checkbox(
-                                  value: _lembrarSenha,
-                                  activeColor: verdeBotao,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _lembrarSenha = value!;
-                                    });
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Text(
-                                'Lembrar senha',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: textoSecundario,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // Link Esqueceu a senha
-                          TextButton(
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Confirmar Senha:',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: textoSecundario,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _confirmarSenhaController,
+                        obscureText: _confirmarSenhaOculta,
+                        decoration: _inputStyle().copyWith(
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _confirmarSenhaOculta
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                              color: textoSecundario,
+                            ),
                             onPressed: () {
-                              // Ação para recuperar senha
-                              print("Esqueceu a senha");
+                              setState(() {
+                                _confirmarSenhaOculta = !_confirmarSenhaOculta;
+                              });
                             },
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            child: const Text(
-                              'Esqueceu a senha ?',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: azulLink,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
                           ),
-                        ],
+                        ),
                       ),
                       const SizedBox(height: 32),
-
-                      // --- BOTÃO LOGIN ---
                       SizedBox(
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Ação de Login real
-                            print("Tentando logar com: ${_emailController.text}");
+                            // Ação de registro
+                            print("Tentando registrar com: \\nEmail: \\${_emailController.text}\\nSenha: \\${_senhaController.text}");
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: verdeBotao,
-                            foregroundColor: textoPrincipal, // Texto escuro no botão claro
+                            foregroundColor: textoPrincipal,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
                           child: const Text(
-                            'Login',
+                            'Registrar',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
@@ -240,28 +191,6 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
-                // --- Link para registrar ---
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterPage(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      'Não tem uma conta? Registre-se',
-                      style: TextStyle(
-                        color: azulLink,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -270,7 +199,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Estilo padrão para os inputs de texto
   InputDecoration _inputStyle() {
     return InputDecoration(
       filled: true,
@@ -278,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFD6D6D6)), // Cinza claro
+        borderSide: const BorderSide(color: Color(0xFFD6D6D6)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -286,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: verdeBotao, width: 2), // Cor do botão no foco
+        borderSide: const BorderSide(color: verdeBotao, width: 2),
       ),
     );
   }
