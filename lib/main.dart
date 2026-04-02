@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:piprojeto/pages/login_page.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
 
-  // Cores da marca
+  // Definição das cores da marca baseadas na imagem
   static const Color azulEscuro = Color(0xFF1A3D5D);
   static const Color verdeLima = Color(0xFFD4E157);
   static const Color azulClaro = Color(0xFF00BCD4);
@@ -16,28 +15,41 @@ class SplashPage extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            // --- Parte Superior: Logo ---
+            // Parte Superior: Logo e Identidade
             Column(
               children: [
-                const SizedBox(height: 80),
+                const SizedBox(height: 60),
                 Center(
-                  child: SizedBox(
-                    width: 360,
-                    height: 240,
-                    child: Image.asset(
-                      'assets/Horizontal Padrão.png',
-                      fit: BoxFit.contain,
-                      // Caso a imagem não carregue, adicione um erro de log
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(Icons.broken_image, size: 50, color: Colors.grey);
-                      },
-                    ),
+                  child: Column(
+                    children: [
+                      // Representação do Logo (Pode substituir por Image.asset)
+                      _buildLogoSimulado(),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'ATIVVO',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: azulEscuro,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      const Text(
+                        'CONSULTORIA ENERGÉTICA',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: azulEscuro,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
 
-            // --- Divisor Central ---
+            // Divisor azul sutil no meio (conforme a imagem)
             Positioned(
               top: MediaQuery.of(context).size.height * 0.45,
               left: 0,
@@ -48,7 +60,7 @@ class SplashPage extends StatelessWidget {
               ),
             ),
 
-            // --- Parte Inferior: Texto e Botão ---
+            // Parte Inferior: Texto e Ação
             Positioned(
               bottom: 60,
               left: 32,
@@ -71,11 +83,7 @@ class SplashPage extends StatelessWidget {
                     height: 55,
                     child: ElevatedButton(
                       onPressed: () {
-                        // CORREÇÃO AQUI: Apenas chama a classe LoginPage()
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const LoginPage()),
-                        );
+                        // Ação de login
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: verdeLima,
@@ -98,6 +106,44 @@ class SplashPage extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // Widget apenas para simular o ícone do logo da imagem
+  Widget _buildLogoSimulado() {
+    return SizedBox(
+      width: 100,
+      height: 100,
+      child: Stack(
+        children: [
+          Positioned(
+            top: 0, right: 10,
+            child: _logoBar(azulEscuro, 45),
+          ),
+          Positioned(
+            top: 25, left: 10,
+            child: _logoBar(azulClaro, -45),
+          ),
+          Positioned(
+            bottom: 10, right: 25,
+            child: _logoBar(verdeLima, -45),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _logoBar(Color color, double angle) {
+    return Transform.rotate(
+      angle: angle * 3.14 / 180,
+      child: Container(
+        width: 12,
+        height: 45,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
     );
