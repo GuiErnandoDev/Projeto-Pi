@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -167,9 +169,37 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // Ação de registro
-                            print("Tentando registrar com: \\nEmail: \\${_emailController.text}\\nSenha: \\${_senhaController.text}");
+                          onPressed: () async {
+                            if (_senhaController.text != _confirmarSenhaController.text) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('As senhas não conferem!')),
+                              );
+                              return;
+                            }
+                            try {
+                              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                email: _emailController.text.trim(),
+                                password: _senhaController.text.trim(),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Cadastro realizado com sucesso!')),
+                              );
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(builder: (context) => const HomePage()),
+                                (route) => false,
+                              );
+                            } on FirebaseAuthException catch (e) {
+                              String msg = 'Erro ao cadastrar';
+                              if (e.code == 'email-already-in-use') {
+                                msg = 'E-mail já cadastrado';
+                              } else if (e.code == 'weak-password') {
+                                msg = 'Senha muito fraca';
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(msg)),
+                              );
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: verdeBotao,

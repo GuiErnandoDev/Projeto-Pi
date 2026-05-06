@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'register_page.dart';
+import 'home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -91,10 +93,8 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Título "Login"
-                      const Center(
+                      Center(
                         child: Text(
                           'Login',
                           style: TextStyle(
@@ -216,9 +216,33 @@ class _LoginPageState extends State<LoginPage> {
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // Ação de Login real
-                            print("Tentando logar com: ${_emailController.text}");
+                          onPressed: () async {
+                            // Autenticação Firebase
+                            try {
+                              final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                email: _emailController.text.trim(),
+                                password: _senhaController.text.trim(),
+                              );
+                              // Login bem-sucedido
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Login realizado com sucesso!')),
+                              );
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(builder: (context) => const HomePage()),
+                                (route) => false,
+                              );
+                            } on FirebaseAuthException catch (e) {
+                              String msg = 'Erro ao fazer login';
+                              if (e.code == 'user-not-found') {
+                                msg = 'Usuário não encontrado';
+                              } else if (e.code == 'wrong-password') {
+                                msg = 'Senha incorreta';
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(msg)),
+                              );
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: verdeBotao,
@@ -265,9 +289,9 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
-        ),
-      ),
+        ),      ),
     );
+
   }
 
   // Estilo padrão para os inputs de texto

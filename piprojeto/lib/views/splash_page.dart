@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:piprojeto/pages/login_page.dart';
+import 'package:piprojeto/views/login_page.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -71,8 +71,8 @@ class SplashPage extends StatelessWidget {
                     height: 55,
                     child: ElevatedButton(
                       onPressed: () {
-                        // CORREÇÃO AQUI: Apenas chama a classe LoginPage()
-                        Navigator.push(
+                        // Agora remove a SplashPage da pilha
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => const LoginPage()),
                         );
