@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "568207779506",
+    "project_id": "pi-mobile-62a5a",
+    "storage_bucket": "pi-mobile-62a5a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568207779506:android:8c06beeaf4ea86be110bab",
+        "android_client_info": {
+          "package_name": "com.example.piprojeto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjPWfL9D-UrILCJo7sKOIMf0UOZIcySwk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
