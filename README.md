@@ -1,10 +1,17 @@
-# Portal do Cliente - Ativvo Consultoria de Energia
+# piprojeto
 
-## Objetivo
-Desenvolver um sistema acessível e organizado (Portal do Cliente) para facilitar o acesso às informações de gestão de energia. O sistema permitirá que os clientes da Ativvo acompanhem de forma autônoma seus resultados de consumo, economia financeira, faturas e contratos vigentes.
+A new Flutter project.
 
-## Público-Alvo
-Clientes da Ativvo Consultoria de Energia (empresas e pessoas físicas) que utilizam os serviços de gestão energética e precisam acompanhar o retorno sobre o investimento e seus indicadores de consumo.
+## Getting Started
 
-## O Problema
-Com o crescimento da carteira de clientes, a Ativvo lida com um grande volume de demandas e dados complexos de diferentes tipos. Atualmente, há uma dificuldade em centralizar e apresentar essas informações (consumo, economia, faturas e contratos) de forma eficiente, clara e acessível para o cliente final, sem que ele precise solicitar esses dados manualmente.
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
+- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
