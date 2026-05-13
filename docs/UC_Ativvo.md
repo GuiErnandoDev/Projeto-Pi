@@ -31,19 +31,7 @@
 **Pré-condição:** o cliente já possui cadastro no sistema.  
 **Pós-condição:** o cliente redefine a senha e pode voltar a acessar a conta.
 
-### Fluxo principal
-1. O cliente seleciona a opção **“Esqueci minha senha”**.
-2. Informa os dados solicitados.
-3. O sistema inicia o processo de recuperação.
-4. O cliente redefine a senha.
-5. O acesso é restabelecido.
-
-### Fluxos alternativos
-- Se os dados informados não forem reconhecidos, o sistema não conclui a recuperação.
-- Se o processo for interrompido, a senha continua a mesma até a redefinição correta.
-
-### Relação com o MVP
-Esse caso de uso corresponde ao **RF03** e compõe o bloco mínimo de autenticação e segurança do portal.
+<img width="432" height="742" alt="image" src="https://github.com/user-attachments/assets/02418181-a8db-4fdb-a277-f3477f48c96b" />
 
 ---
 
@@ -54,19 +42,7 @@ Esse caso de uso corresponde ao **RF03** e compõe o bloco mínimo de autentica�
 **Pré-condição:** o cliente já está logado no sistema.  
 **Pós-condição:** as informações alteradas ficam registradas no perfil do cliente.
 
-### Fluxo principal
-1. O cliente acessa a área de perfil.
-2. Visualiza seus dados.
-3. Edita os campos permitidos.
-4. Salva as alterações.
-5. O sistema atualiza o cadastro.
-
-### Fluxos alternativos
-- Se algum campo não puder ser alterado, o sistema mantém esse dado apenas para consulta.
-- Se houver erro no salvamento, os dados anteriores permanecem válidos.
-
-### Relação com o MVP
-Esse caso de uso implementa o **RF04** e atende à proposta de dar mais autonomia ao cliente dentro do portal.
+<img width="692" height="592" alt="image" src="https://github.com/user-attachments/assets/f28c618e-a888-4fb4-9ad8-8bddf0ca1529" />
 
 ---
 
@@ -77,17 +53,7 @@ Esse caso de uso implementa o **RF04** e atende à proposta de dar mais autonomi
 **Pré-condição:** o cliente precisa estar autenticado.  
 **Pós-condição:** as informações do cliente são exibidas para consulta.
 
-### Fluxo principal
-1. O cliente acessa a aba de informações.
-2. O sistema busca os dados associados à conta.
-3. As informações são exibidas na tela.
-
-### Fluxos alternativos
-- Se algum dado estiver incompleto, o sistema mostra somente as informações disponíveis.
-- O cliente não pode visualizar dados que não estejam vinculados à própria conta.
-
-### Relação com o MVP
-Esse caso de uso corresponde ao **RF05** e também se relaciona à **RN01**, que restringe a visualização aos dados do próprio titular.
+<img width="594" height="415" alt="image" src="https://github.com/user-attachments/assets/9d6acc73-1b9c-41f1-9614-dd314aee3864" />
 
 ---
 
@@ -98,19 +64,7 @@ Esse caso de uso corresponde ao **RF05** e também se relaciona à **RN01**, que
 **Pré-condição:** o cliente precisa estar logado e ter faturas vinculadas ao seu cadastro.  
 **Pós-condição:** a lista de faturas é exibida e o PDF escolhido pode ser baixado.
 
-### Fluxo principal
-1. O cliente acessa a área de faturas.
-2. O sistema lista as faturas disponíveis.
-3. O cliente escolhe uma fatura.
-4. O sistema libera o download em PDF.
-
-### Fluxos alternativos
-- Se não houver faturas disponíveis, o sistema informa isso ao cliente.
-- Se o download falhar, a fatura continua listada para nova tentativa.
-- As faturas devem aparecer com o status correto, como paga, pendente ou em atraso.
-
-### Relação com o MVP
-Esse caso de uso implementa o **RF06** e é complementado pela **RN03**, que define a exibição das faturas conforme seu status real.
+<img width="646" height="620" alt="image" src="https://github.com/user-attachments/assets/169d53ef-6411-49fa-bce7-c5671520be6b" />
 
 ---
 
@@ -121,18 +75,7 @@ Esse caso de uso implementa o **RF06** e é complementado pela **RN03**, que def
 **Pré-condição:** o cliente está logado e possui dados de consumo vinculados à conta.  
 **Pós-condição:** o dashboard de consumo é exibido ao cliente.
 
-### Fluxo principal
-1. O cliente acessa o dashboard de consumo.
-2. O sistema recupera os dados correspondentes.
-3. Exibe gráficos e indicadores.
-4. O cliente analisa o histórico apresentado.
-
-### Fluxos alternativos
-- Se não houver dados no período, o sistema exibe mensagem informando a ausência de registros.
-- Se existirem contratos inativos, os dashboards do mês atual devem considerar apenas contratos ativos.
-
-### Relação com o MVP
-Esse caso de uso corresponde ao **RF07** e depende da **RN04**, que limita os dashboards atuais aos contratos ativos.
+<img width="446" height="574" alt="image" src="https://github.com/user-attachments/assets/4b3d0a7b-ad77-4220-a25b-f87345294545" />
 
 ---
 
@@ -143,18 +86,7 @@ Esse caso de uso corresponde ao **RF07** e depende da **RN04**, que limita os da
 **Pré-condição:** o cliente está autenticado e possui dados financeiros vinculados à conta.  
 **Pós-condição:** o dashboard de economia é apresentado com os indicadores disponíveis.
 
-### Fluxo principal
-1. O cliente abre o dashboard de economia.
-2. O sistema busca os dados financeiros correspondentes.
-3. Exibe gráficos e valores de economia.
-4. O cliente consulta os resultados.
-
-### Fluxos alternativos
-- Se não existirem dados para o período escolhido, o sistema informa a indisponibilidade.
-- Se houver contratos antigos, os dados do mês atual devem refletir somente os contratos ativos.
-
-### Relação com o MVP
-Esse caso de uso implementa o **RF08** e também é afetado pela **RN04**, que separa o histórico de contratos antigos dos dados atuais exibidos nos dashboards.
+<img width="478" height="559" alt="image" src="https://github.com/user-attachments/assets/1252cc0a-3150-4d12-aec9-bd9f6c7108ad" />
 
 ---
 
@@ -165,18 +97,7 @@ Esse caso de uso implementa o **RF08** e também é afetado pela **RN04**, que s
 **Pré-condição:** o cliente está logado e acessando algum dashboard do sistema.  
 **Pós-condição:** os dashboards passam a exibir os dados do mês e ano selecionados.
 
-### Fluxo principal
-1. O cliente acessa um dashboard.
-2. Seleciona mês e ano.
-3. O sistema aplica o filtro.
-4. Os gráficos são atualizados conforme o período informado.
-
-### Fluxos alternativos
-- Se não houver dados no período selecionado, o sistema informa que não existem registros.
-- Se o filtro for removido, a visualização padrão é restaurada.
-
-### Relação com o MVP
-Esse caso de uso corresponde ao **RF09** e funciona como apoio direto aos dashboards de consumo e economia.
+<img width="525" height="544" alt="image" src="https://github.com/user-attachments/assets/0632e61b-82e0-4377-9ba1-782f43a23c0e" />
 
 ---
 
@@ -187,15 +108,5 @@ Esse caso de uso corresponde ao **RF09** e funciona como apoio direto aos dashbo
 **Pré-condição:** o cliente está autenticado no sistema e possui vínculo contratual com a empresa.  
 **Pós-condição:** o cliente consegue visualizar contratos ativos e, quando houver, o histórico de contratos inativos.
 
-### Fluxo principal
-1. O cliente acessa a área de contratos.
-2. O sistema busca os contratos ligados ao titular autenticado.
-3. Exibe os contratos ativos e o histórico disponível.
+<img width="606" height="688" alt="image" src="https://github.com/user-attachments/assets/a116071a-b406-4d44-aae1-80c08d56ab4f" />
 
-### Fluxos alternativos
-- Se não houver contratos cadastrados, o sistema informa que não existem registros.
-- O cliente não pode visualizar contratos vinculados a outro CPF ou CNPJ.
-- Contratos inativos podem aparecer no histórico, mas não devem compor os dashboards atuais.
-
-### Relação com o MVP
-Esse caso de uso é complementar aos requisitos funcionais, porque a consulta de contratos aparece no objetivo do sistema e nas regras de negócio sobre acesso restrito ao titular e exibição de contratos.
