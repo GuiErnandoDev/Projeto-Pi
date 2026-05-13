@@ -24,10 +24,12 @@
 
 **Diagrama de Atividade**
 ---
+
 <img width="410" height="666" alt="image" src="https://github.com/user-attachments/assets/97449243-7d0e-4b23-8139-1df3a61de963" />
 
----
 **Diagrama de Sequência**
+---
+
 <img width="669" height="536" alt="image" src="https://github.com/user-attachments/assets/affdc60a-cac9-4bb6-8368-705a03670c4b" />
 
 ---
