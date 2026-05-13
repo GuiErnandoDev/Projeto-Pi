@@ -7,19 +7,8 @@
 **Pré-condição:** o cliente já possui conta cadastrada no sistema.  
 **Pós-condição:** o cliente entra na área principal do portal.
 
-### Fluxo principal
-1. O cliente acessa a tela de login.
-2. Informa e-mail e senha.
-3. O sistema valida as credenciais.
-4. O acesso ao portal é liberado.
+<img width="470" height="747" alt="image" src="https://github.com/user-attachments/assets/18992287-dae1-480a-bc93-c51a09a1b285" />
 
-### Fluxos alternativos
-- Se o e-mail ou a senha estiverem incorretos, o sistema informa a falha e permite nova tentativa.
-- Se houver 5 tentativas inválidas, a conta é temporariamente bloqueada.
-- Se for o primeiro acesso com senha provisória, o sistema exige a troca da senha antes de liberar o restante do portal.
-
-### Relação com o MVP
-Esse caso de uso corresponde ao **RF01** e é reforçado pelas regras **RN02** e **RN06**, sendo a porta de entrada para todas as outras funcionalidades do sistema.
 
 ---
 
@@ -30,18 +19,8 @@ Esse caso de uso corresponde ao **RF01** e é reforçado pelas regras **RN02** e
 **Pré-condição:** o cliente precisa estar autenticado ou em processo de primeiro acesso.  
 **Pós-condição:** a nova senha passa a valer para os próximos acessos.
 
-### Fluxo principal
-1. O cliente acessa a opção de alterar senha.
-2. Informa a nova senha.
-3. O sistema valida a alteração.
-4. A nova senha é salva.
+<img width="410" height="666" alt="image" src="https://github.com/user-attachments/assets/97449243-7d0e-4b23-8139-1df3a61de963" />
 
-### Fluxos alternativos
-- Se a nova senha não atender aos critérios definidos pelo sistema, a alteração não é concluída.
-- Se for o primeiro acesso, o cliente não consegue seguir para o restante do portal sem trocar a senha.
-
-### Relação com o MVP
-Esse caso de uso implementa o **RF02** e está diretamente ligado à regra **RN02**, que obriga a troca da senha padrão no primeiro login.
 
 ---
 
