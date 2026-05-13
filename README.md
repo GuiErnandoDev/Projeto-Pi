@@ -15,13 +15,4 @@ dificuldades para ninguém.
 - Firebase (autenticação, firestore, etc.)
 - Plataforma Android
 
-## Documentação
-
-Os diagramas, requisitos e documentação técnica:
-- DATV_ATIVVO.md
-- DCD_ATIVVO.md
-- DSEQ_ATIVVO.md
-- DUC_ATIVVO.md
-- rf.md, rn.md, rnf.md
-- UC_Ativvo.md
 
