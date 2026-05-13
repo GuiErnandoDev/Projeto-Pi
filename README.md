@@ -1,17 +1,22 @@
-# piprojeto
 
-A new Flutter project.
+# Projeto Ativvo
 
-## Getting Started
+Aplicativo desenvolvido em Flutter para gerenciar atividades, com autenticação via Firebase e suporte multiplataforma (Android, iOS, Web, Windows, Linux e macOS).
 
-This project is a starting point for a Flutter application.
+## 🛠️ Tecnologias Utilizadas
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter
+- Dart
+- Firebase (autenticação, firestore, etc.)
+- Suporte multiplataforma (Android, iOS, Web, Desktop)
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## 📄 Documentação
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Veja a pasta `docs/` para diagramas, requisitos e documentação técnica:
+- DATV_ATIVVO.md
+- DCD_ATIVVO.md
+- DSEQ_ATIVVO.md
+- DUC_ATIVVO.md
+- rf.md, rn.md, rnf.md
+- UC_Ativvo.md
+
