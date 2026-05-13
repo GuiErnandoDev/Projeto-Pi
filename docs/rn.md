@@ -12,8 +12,5 @@ O sistema deve classificar e exibir as faturas com base em seus status reais (ex
 ### RN04 — Exibição de Contratos 
 O cliente pode visualizar o histórico de contratos antigos (inativos), mas os dashboards de consumo e economia do mês atual devem refletir apenas os dados de contratos que estão atualmente ativos.
 
-### RN05 — Maioridade 
-Para criar uma conta, o usuário deve ter mais de 18 anos.
-
-### RN06 — Limite de tentativas de login
+### RN05 — Limite de tentativas de login
 Após 5 tentativas inválidas, a conta deve ser temporariamente bloqueada.
