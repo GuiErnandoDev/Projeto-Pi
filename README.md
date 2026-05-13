@@ -11,8 +11,7 @@ dificuldades para ninguém.
 
 ## 🛠️ Tecnologias Utilizadas
 
-- Flutter
-- Dart
+- Flutter / Dart
 - Firebase (autenticação, firestore, etc.)
 - Suporte Android
 
