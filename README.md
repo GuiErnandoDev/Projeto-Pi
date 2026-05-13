@@ -9,13 +9,13 @@ tipos, por isso precisamos de um sistema acessível e
 organizado para facilitar o acesso de todos, sem
 dificuldades para ninguém.
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - Flutter / Dart
 - Firebase (autenticação, firestore, etc.)
-- Suporte Android
+- Plataforma Android
 
-## 📄 Documentação
+## Documentação
 
 Veja a pasta `docs/` para diagramas, requisitos e documentação técnica:
 - DATV_ATIVVO.md
