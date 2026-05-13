@@ -1,5 +1,8 @@
 # Requisitos Funcionais (RF)
 
+### RF00 — Registro de usuário
+O sistema deve permitir o registro de novos clientes com e-mail e senha.
+
 ### RF01 — Login de usuário
 O sistema deve permitir o login individualizado de clientes com e-mail e senha.
 
