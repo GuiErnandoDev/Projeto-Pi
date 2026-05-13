@@ -14,7 +14,7 @@ dificuldades para ninguém.
 - Flutter
 - Dart
 - Firebase (autenticação, firestore, etc.)
-- Suporte multiplataforma (Android, iOS, Web, Desktop)
+- Suporte Android
 
 ## 📄 Documentação
 
