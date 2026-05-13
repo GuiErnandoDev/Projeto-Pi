@@ -9,9 +9,6 @@ O sistema deve permitir o login individualizado de clientes com e-mail e senha.
 ### RF02 — Alteração de senha
 O sistema deve permitir que o cliente altere sua senha de acesso.
 
-### RF03 — Recuperação de senha
-O sistema deve disponibilizar uma função de recuperação de senha ("Esqueci minha senha").
-
 ### RF04 -Edição de informações
 O sistema deve permitir a edição de dados básicos do perfil do cliente.
 
