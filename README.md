@@ -17,7 +17,7 @@ dificuldades para ninguém.
 
 ## Documentação
 
-Veja a pasta `docs/` para diagramas, requisitos e documentação técnica:
+Os diagramas, requisitos e documentação técnica:
 - DATV_ATIVVO.md
 - DCD_ATIVVO.md
 - DSEQ_ATIVVO.md
