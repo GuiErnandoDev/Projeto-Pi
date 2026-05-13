@@ -1,7 +1,13 @@
 
 # Projeto Ativvo
 
-Aplicativo desenvolvido em Flutter para gerenciar atividades, com autenticação via Firebase e suporte multiplataforma (Android, iOS, Web, Windows, Linux e macOS).
+Aplicativo desenvolvido em Flutter para gerenciar atividades, com autenticação via Firebase. A ideia do projeto é baseada na necessidade de uma ferramenta que seja eficiente para todos os clientes e
+acompanhar os resultados de consumos, quanto
+economizou, faturas e contratos. Nós lidamos com
+um grande volume de demandas e dados de todos os
+tipos, por isso precisamos de um sistema acessível e
+organizado para facilitar o acesso de todos, sem
+dificuldades para ninguém.
 
 ## 🛠️ Tecnologias Utilizadas
 
