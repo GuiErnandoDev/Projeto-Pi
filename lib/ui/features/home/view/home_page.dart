@@ -147,14 +147,6 @@ Widget _buildDrawer(BuildContext context) {
   );
 }
 
-Widget _buildDrawerItem(IconData icon, String title) {
-  return ListTile(
-    leading: Icon(icon, color: Colors.white),
-    title: Text(title, style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
-    onTap: () {},
-  );
-}
-
 Widget _buildSummaryCards() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,

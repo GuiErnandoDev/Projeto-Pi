@@ -107,11 +107,3 @@ Widget _buildDrawer(BuildContext context) {
   );
 }
 
-
-Widget _buildDrawerItem(IconData icon, String title, BuildContext context) {
-  return ListTile(
-    leading: Icon(icon, color: Colors.white),
-    title: Text(title, style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
-    onTap: () {},
-  );
-}
