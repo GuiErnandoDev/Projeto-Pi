@@ -11,7 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Controladores para capturar o que o usuário digita
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
@@ -19,7 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   bool _senhaOculta = true;
   bool _lembrarSenha = false;
 
-  // Definição das cores da marca (ajustadas conforme a imagem de login)
   static const Color azulFundoTopo = Color(0xFF67E6DC); // Ciano claro do degradê
   static const Color azulFundoBase = Color(0xFFC9F7F1); // Ciano quase branco
   static const Color verdeBotao = Color(0xFFD4E157);   // Amarelo esverdeado
@@ -30,7 +28,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Fundo com Degradê conforme imagem
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -42,29 +39,24 @@ class _LoginPageState extends State<LoginPage> {
               azulFundoTopo,
               azulFundoBase,
             ],
-            stops: [0.0, 0.4], // Ajuste onde o degradê começa a clarear
+            stops: [0.0, 0.4],
           ),
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            // Permite rolar a tela se o teclado abrir
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
                 const SizedBox(height: 60),
 
-                // --- ÁREA DA LOGO ---
-                // Para ficar igual à imagem, use um Image.asset() com fundo transparente.
-                // Exemplo: Image.asset('assets/logo_branca.png', height: 80),
                 Center(
                   child: SizedBox(
-                    width: 340, // Ajuste a largura conforme o formato da sua logo
-                    height: 160, // Ajuste a altura conforme necessário
+                    width: 340,
+                    height: 160,
                     child: Image.asset(
-                      'assets/Horizontal Padrão Branco.png', // CAMINHO DO SEU ARQUIVO
+                      'assets/Horizontal Padrão Branco.png',
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) {
-                        // Caso a imagem falhe, mostra o texto para não ficar vazio
                         return const Center(
                           child: Text(
                             'ATIVVO',
@@ -78,11 +70,10 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 50),
 
-                // --- CARD BRANCO DO FORMULÁRIO ---
                 Container(
                   padding: const EdgeInsets.all(32),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9), // Leve transparência
+                    color: Colors.white.withOpacity(0.9),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
@@ -106,7 +97,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 32),
 
-                      // --- Campo Email ---
                       const Text(
                         'Email:',
                         style: TextStyle(
@@ -123,7 +113,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 20),
 
-                      // --- Campo Senha ---
                       const Text(
                         'Senha:',
                         style: TextStyle(
@@ -154,76 +143,16 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 16),
 
-                      // --- Lembrar Senha e Esqueceu a Senha ---
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Checkbox Lembrar Senha
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: Checkbox(
-                                  value: _lembrarSenha,
-                                  activeColor: verdeBotao,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _lembrarSenha = value!;
-                                    });
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Text(
-                                'Lembrar senha',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: textoSecundario,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // Link Esqueceu a senha
-                          TextButton(
-                            onPressed: () {
-                              // Ação para recuperar senha
-                              print("Esqueceu a senha");
-                            },
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            child: const Text(
-                              'Esqueceu a senha ?',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: azulLink,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 32),
-
-                      // --- BOTÃO LOGIN ---
                       SizedBox(
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
                           onPressed: () async {
-                            // Autenticação Firebase
                             try {
                               final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
                                 email: _emailController.text.trim(),
                                 password: _senhaController.text.trim(),
                               );
-                              // Login bem-sucedido
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Login realizado com sucesso!')),
                               );
@@ -246,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: verdeBotao,
-                            foregroundColor: textoPrincipal, // Texto escuro no botão claro
+                            foregroundColor: textoPrincipal,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -265,7 +194,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // --- Link para registrar ---
                 Center(
                   child: TextButton(
                     onPressed: () {
@@ -294,7 +222,6 @@ class _LoginPageState extends State<LoginPage> {
 
   }
 
-  // Estilo padrão para os inputs de texto
   InputDecoration _inputStyle() {
     return InputDecoration(
       filled: true,
@@ -302,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFD6D6D6)), // Cinza claro
+        borderSide: const BorderSide(color: Color(0xFFD6D6D6)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -310,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: verdeBotao, width: 2), // Cor do botão no foco
+        borderSide: const BorderSide(color: verdeBotao, width: 2),
       ),
     );
   }
