@@ -14,7 +14,8 @@ dificuldades para ninguém.
 Este projeto foca em prover uma interface acessível para clientes que precisem acompanhar faturas, contratos e desempenho no mercado livre de energia. O design atual já inclui:
 
 - Tela inicial de apresentação
-- Login com autenticação Fi
+- Login com autenticação FireBase
+  
 - Registro de usuário com confirmação de senha
 - Acesso a Dashboard de consumo e economia
 - Área de Perfil
