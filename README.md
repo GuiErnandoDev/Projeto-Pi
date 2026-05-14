@@ -9,10 +9,26 @@ tipos, por isso precisamos de um sistema acessível e
 organizado para facilitar o acesso de todos, sem
 dificuldades para ninguém.
 
+## Visão Geral
+
+Este projeto foca em prover uma interface acessível para clientes que precisem acompanhar faturas, contratos e desempenho no mercado livre de energia. O design atual já inclui:
+
+- Tela inicial de apresentação
+- Login com autenticação Fi
+- Registro de usuário com confirmação de senha
+- Acesso a Dashboard de consumo e economia
+- Área de Perfil
+- Consulta de Faturas
+
 ## Tecnologias Utilizadas
 
-- Flutter / Dart
-- Firebase (autenticação, firestore, etc.)
+- Flutter
+- Dart
+- Firebase Core
+- Firebase Auth
 - Plataforma Android
+
+
+
 
 
