@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:piprojeto/views/login_page.dart';
+import '../../auth/view/login_page.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
