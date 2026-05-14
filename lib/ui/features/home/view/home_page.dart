@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../auth/view/login_page.dart';
+import '../../faturas/view/faturas_page.dart';
+import '../../contratos/view/contratos_page.dart';
+import '../../consumo/view/consumo_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,10 +13,14 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       drawer: _buildDrawer(context),
       appBar: AppBar(
-        title: const Text('ATIVVO'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        title: Image.asset(
+      'assets/Horizontal Padrão Branco.png',
+        height: 60, // ajuste o tamanho conforme necessário
+        ),
+        backgroundColor: const Color(0xFF042454),
+        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
         elevation: 0,
+        toolbarHeight: 80,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -25,10 +34,9 @@ class HomePage extends StatelessWidget {
                 style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 children: [
                   TextSpan(
-                    text: 'Nogueira',
-                    style: TextStyle(color: Colors.teal),
+                    text: FirebaseAuth.instance.currentUser?.displayName ?? 'Usuário',
+                    style: const TextStyle(color: Color(0xFF042454)),
                   ),
-                  TextSpan(text: ' 👋'),
                 ],
               ),
             ),
@@ -43,11 +51,13 @@ class HomePage extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(child: _buildChartCard('Consumo Mensal (kWh)', Colors.teal.shade100)),
+                Expanded(child: _buildChartCard('Consumo Mensal (kWh)', const Color.fromARGB(255, 237, 247, 246))),
                 const SizedBox(width: 16),
-                Expanded(child: _buildChartCard('Economia Mensal (R\$', Colors.yellow.shade200)),
+                Expanded(child: _buildChartCard('Economia Mensal (R\$', const Color.fromARGB(255, 237, 247, 246))),
               ],
             ),
+            const SizedBox(height: 24),
+            _buildFaturaCards(),
             const SizedBox(height: 24),
             _buildFaturasList(),
           ],
@@ -61,30 +71,75 @@ class HomePage extends StatelessWidget {
 Widget _buildDrawer(BuildContext context) {
   return Drawer(
     child: Container(
-      color: const Color(0xFF16202A),
+      color: const Color(0xFF042454),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(color: Color(0xFF16202A)),
+            decoration: const BoxDecoration(color: Color(0xFF042454)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text('ATIVVO', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-                SizedBox(height: 4),
-                Text('CONSULTORIA ENERGÉTICA', style: TextStyle(color: Colors.white70, fontSize: 12)),
+              children: [
+                Image.asset(
+                  'assets/Horizontal Padrão Branco.png',
+                  height: 128, // ajuste o tamanho conforme necessário
+                ),
+                const SizedBox(height: 8),
               ],
             ),
           ),
-          _buildDrawerItem(Icons.dashboard, 'Dashboard'),
-          _buildDrawerItem(Icons.receipt_long, 'Faturas'),
-          _buildDrawerItem(Icons.assignment, 'Contratos'),
-          _buildDrawerItem(Icons.bar_chart, 'Consumo'),
+          ListTile(
+            leading: const Icon(Icons.dashboard, color: Colors.white),
+            title: const Text('Dashboard', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+            onTap: () {
+              Navigator.pop(context); // Fecha o Drawer
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.receipt_long, color: Colors.white),
+            title: const Text('Faturas', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+            onTap: () {
+              Navigator.pop(context); // Fecha o Drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FaturasPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.assignment, color: Colors.white),
+            title: const Text('Contratos', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+            onTap: () {
+              Navigator.pop(context); // Fecha o Drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ContratosPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.bar_chart, color: Colors.white),
+            title: const Text('Consumo', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+            onTap: () {
+              Navigator.pop(context); // Fecha o Drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ConsumoPage()),
+              );
+            },
+          ),
           const Divider(color: Colors.white24),
           ListTile(
             leading: const Icon(Icons.exit_to_app, color: Colors.white70),
             title: const Text('Sair', style: TextStyle(color: Colors.white70)),
-            onTap: () {},
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+                (route) => false,
+              );
+            },
           ),
         ],
       ),
@@ -95,7 +150,7 @@ Widget _buildDrawer(BuildContext context) {
 Widget _buildDrawerItem(IconData icon, String title) {
   return ListTile(
     leading: Icon(icon, color: Colors.white),
-    title: Text(title, style: const TextStyle(color: Colors.white)),
+    title: Text(title, style: const TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
     onTap: () {},
   );
 }
@@ -104,10 +159,8 @@ Widget _buildSummaryCards() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      _buildSummaryCard('Consumo Total', '39.600 kWh', Icons.flash_on, Colors.teal.shade50),
-      _buildSummaryCard('Economia Total', 'R\$ 5.120,00', Icons.trending_down, Colors.green.shade50),
-      _buildSummaryCard('Faturas Pendentes', '2', Icons.receipt_long, Colors.orange.shade50),
-      _buildSummaryCard('Contratos Ativos', '2', Icons.assignment, Colors.blue.shade50),
+      _buildSummaryCard('Consumo Total', '39.600 kWh', Icons.flash_on, const Color(0xFF042454)),
+      _buildSummaryCard('Economia Total', 'R\$ 5.120,00', Icons.trending_down, const Color(0xFF042454)),
     ],
   );
 }
@@ -121,11 +174,11 @@ Widget _buildSummaryCard(String title, String value, IconData icon, Color color)
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: Colors.teal, size: 28),
+            Icon(icon, color: const Color.fromARGB(255, 255, 255, 255), size: 28),
             const SizedBox(height: 8),
-            Text(title, style: const TextStyle(fontSize: 14, color: Colors.black54)),
+            Text(title, style: const TextStyle(fontSize: 14, color: Color.fromARGB(255, 255, 255, 255))),
             const SizedBox(height: 4),
-            Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(value, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 255, 255, 255))),
           ],
         ),
       ),
@@ -156,9 +209,41 @@ Widget _buildChartCard(String title, Color color) {
     ),
   );
 }
+      
+Widget _buildFaturaCards() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      _buildFaturaCard('Faturas Pendentes', '2', Icons.receipt_long, const Color(0xFF042454)),
+      _buildFaturaCard('Contratos Ativos', '2', Icons.assignment, const Color(0xFF042454)),
+    ],
+  );
+}
+
+Widget _buildFaturaCard(String title, String value, IconData icon, Color color) {
+  return Expanded(
+    child: Card(
+      color: color,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, color: const Color.fromARGB(255, 255, 255, 255), size: 28),
+            const SizedBox(height: 8),
+            Text(title, style: const TextStyle(fontSize: 14, color: Color.fromARGB(255, 255, 255, 255))),
+            const SizedBox(height: 4),
+            Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 255, 255, 255))),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 
 Widget _buildFaturasList() {
   return Card(
+    color: const Color.fromARGB(255, 237, 247, 246),
     child: Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
