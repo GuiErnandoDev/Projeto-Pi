@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:piprojeto/data/services/firestore_service.dart';
 import '../../auth/view/login_page.dart';
 import '../../home/view/home_page.dart';
 import '../../faturas/view/faturas_page.dart';
-import '../../consumo/view/consumo_page.dart';
 
 
 class ContratosPage extends StatelessWidget {
@@ -11,6 +12,8 @@ class ContratosPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String? uid = FirebaseAuth.instance.currentUser?.uid;
+    final FirestoreService _firestoreService = FirestoreService();
     return Scaffold(
       drawer: _buildDrawer(context),
       appBar: AppBar(
@@ -41,26 +44,36 @@ class ContratosPage extends StatelessWidget {
             const SizedBox(height: 20),
             const SizedBox(height: 24),
             Expanded(
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  _ContratoCard(
-                    titulo: 'Migração para Mercado Livre',
-                    descricao: 'Contrato de migração e acompanhamento no mercado livre de energia.',
-                    inicio: '31/05/2025',
-                    termino: '30/05/2027',
-                    valor: 'R\$ 850,00',
-                  ),
-                  SizedBox(width: 16),
-                  _ContratoCard(
-                    titulo: 'Contrato de Gestão Energética',
-                    descricao: 'Contrato principal de consultoria e gestão de consumo energético com a Ativo.',
-                    inicio: '31/12/2024',
-                    termino: '30/12/2026',
-                    valor: 'R\$ 1.500,00',
-                  ),
-                ],
-              ),
+              child: uid == null
+                  ? const Center(child: Text('Usuário não autenticado.'))
+                  : StreamBuilder<QuerySnapshot>(
+                      stream: _firestoreService.getUserSubcollectionStream(uid, 'contratos'),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                          return const Center(child: Text('Nenhum contrato encontrado.'));
+                        }
+                        final docs = snapshot.data!.docs;
+                        return ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: docs.length,
+                          separatorBuilder: (_, __) => const SizedBox(width: 16),
+                          itemBuilder: (context, index) {
+                            final data = docs[index].data() as Map<String, dynamic>;
+                            return _ContratoCard(
+                              titulo: data['titulo'] ?? '',
+                              descricao: data['descricao'] ?? '',
+                              inicio: data['inicio'] ?? '',
+                              termino: data['termino'] ?? '',
+                              valor: data['valor']?.toString() ?? '',
+                              status: data['status'] ?? '',
+                            );
+                          },
+                        );
+                      },
+                    ),
             ),
           ],
         ),
@@ -69,12 +82,14 @@ class ContratosPage extends StatelessWidget {
   }
 }
 
+
 class _ContratoCard extends StatelessWidget {
   final String titulo;
   final String descricao;
   final String inicio;
   final String termino;
   final String valor;
+  final String status;
 
   const _ContratoCard({
     required this.titulo,
@@ -82,6 +97,7 @@ class _ContratoCard extends StatelessWidget {
     required this.inicio,
     required this.termino,
     required this.valor,
+    required this.status,
     Key? key,
   }) : super(key: key);
 
@@ -119,15 +135,17 @@ class _ContratoCard extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Color(0xFF3FE18F).withOpacity(0.15),
+                  color: status == 'Ativo'
+                      ? Color(0xFF3FE18F).withOpacity(0.15)
+                      : Colors.red.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
-                  'Ativo',
+                  status,
                   style: TextStyle(
-                    color: Color(0xFF3FE18F),
+                    color: status == 'Ativo' ? Color(0xFF3FE18F) : Colors.red,
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
                   ),
@@ -169,14 +187,7 @@ class _ContratoCard extends StatelessWidget {
             ],
           ),
           Spacer(),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: IconButton(
-              icon: Icon(Icons.delete_outline, color: Colors.red[300]),
-              onPressed: () {},
-              tooltip: 'Excluir contrato',
-            ),
-          ),
+          // Ícone de excluir contrato removido para clientes
         ],
       ),
     );
@@ -232,17 +243,7 @@ Widget _buildDrawer(BuildContext context) {
               Navigator.pop(context); // Fecha o Drawer
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.bar_chart, color: Colors.white),
-            title: const Text('Consumo', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
-            onTap: () {
-              Navigator.pop(context); // Fecha o Drawer
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ConsumoPage()),
-              );
-            },
-          ),
+          // ListTile de Consumo removido
           const Divider(color: Colors.white24),
           ListTile(
             leading: const Icon(Icons.exit_to_app, color: Colors.white70),
