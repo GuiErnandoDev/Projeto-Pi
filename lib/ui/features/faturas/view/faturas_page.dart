@@ -45,7 +45,11 @@ class _FaturasPageState extends State<FaturasPage> {
             Row(
               children: [
                 Expanded(
-                  child: Container(),
+
+    
+
+                  child: Container(), // Campo de busca pode ser implementado depois
+
                 ),
               ],
             ),
