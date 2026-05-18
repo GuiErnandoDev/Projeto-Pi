@@ -15,10 +15,8 @@ Este projeto foca em prover uma interface acessível para clientes que precisem 
 
 - Tela inicial de apresentação
 - Login com autenticação FireBase
-  
 - Registro de usuário com confirmação de senha
 - Acesso a Dashboard de consumo e economia
-- Área de Perfil
 - Consulta de Faturas
 
 ## Tecnologias Utilizadas
