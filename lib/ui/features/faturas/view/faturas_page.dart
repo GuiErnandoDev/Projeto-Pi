@@ -3,9 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piprojeto/ui/features/home/view/home_page.dart';
 import '../../auth/view/login_page.dart';
 import '../../contratos/view/contratos_page.dart';
-// importação de consumo removida
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piprojeto/services/firestore_service.dart';
+import 'package:piprojeto/data/services/firestore_service.dart';
 
 class FaturasPage extends StatefulWidget {
   const FaturasPage({super.key});
@@ -49,19 +48,6 @@ class _FaturasPageState extends State<FaturasPage> {
               children: [
                 Expanded(
                   child: Container(), // Campo de busca pode ser implementado depois
-                ),
-                const SizedBox(width: 12),
-                DropdownButton<String>(
-                  value: _status,
-                  items: const [
-                    DropdownMenuItem(value: 'Todos', child: Text('Todos')),
-                    DropdownMenuItem(value: 'Pagas', child: Text('Pagas')),
-                    DropdownMenuItem(value: 'Pendente', child: Text('Pendentes')),
-                  ],
-                  onChanged: (v) {
-                    if (v != null) setState(() => _status = v);
-                  },
-                  borderRadius: BorderRadius.circular(12),
                 ),
               ],
             ),
