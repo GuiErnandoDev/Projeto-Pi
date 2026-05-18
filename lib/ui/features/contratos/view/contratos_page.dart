@@ -6,14 +6,14 @@ import '../../auth/view/login_page.dart';
 import '../../home/view/home_page.dart';
 import '../../faturas/view/faturas_page.dart';
 
-
 class ContratosPage extends StatelessWidget {
   const ContratosPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final String? uid = FirebaseAuth.instance.currentUser?.uid;
-    final FirestoreService _firestoreService = FirestoreService();
+    final FirestoreService firestoreService = FirestoreService();
+
     return Scaffold(
       drawer: _buildDrawer(context),
       appBar: AppBar(
@@ -41,34 +41,47 @@ class ContratosPage extends StatelessWidget {
               'Gerencie seus contratos de serviço',
               style: TextStyle(fontSize: 14, color: Colors.black54),
             ),
-            const SizedBox(height: 20),
-            const SizedBox(height: 24),
+            const SizedBox(height: 44),
             Expanded(
               child: uid == null
                   ? const Center(child: Text('Usuário não autenticado.'))
                   : StreamBuilder<QuerySnapshot>(
-                      stream: _firestoreService.getUserSubcollectionStream(uid, 'contratos'),
+                      stream: firestoreService.getUserSubcollectionStream(
+                        uid,
+                        'contratos',
+                      ),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         }
+
                         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                          return const Center(child: Text('Nenhum contrato encontrado.'));
+                          return const Center(
+                            child: Text('Nenhum contrato encontrado.'),
+                          );
                         }
+
                         final docs = snapshot.data!.docs;
+
                         return ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemCount: docs.length,
-                          separatorBuilder: (_, __) => const SizedBox(width: 16),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(width: 16),
                           itemBuilder: (context, index) {
-                            final data = docs[index].data() as Map<String, dynamic>;
+                            final data =
+                                docs[index].data() as Map<String, dynamic>;
+
                             return _ContratoCard(
-                              titulo: data['titulo'] ?? '',
-                              descricao: data['descricao'] ?? '',
-                              inicio: data['inicio'] ?? '',
-                              termino: data['termino'] ?? '',
+                              titulo: data['titulo']?.toString() ?? '',
+                              descricao: data['descricao']?.toString() ?? '',
+                              inicio: data['inicio']?.toString() ?? '',
+                              termino: data['termino']?.toString() ?? '',
                               valor: data['valor']?.toString() ?? '',
-                              status: data['status'] ?? '',
+                              status: data['status']?.toString() ?? '',
                             );
                           },
                         );
@@ -81,7 +94,6 @@ class ContratosPage extends StatelessWidget {
     );
   }
 }
-
 
 class _ContratoCard extends StatelessWidget {
   final String titulo;
@@ -98,11 +110,12 @@ class _ContratoCard extends StatelessWidget {
     required this.termino,
     required this.valor,
     required this.status,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
+    final bool contratoAtivo = status == 'Ativo';
+
     return Container(
       width: 320,
       padding: const EdgeInsets.all(20),
@@ -110,7 +123,7 @@ class _ContratoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black12,
             blurRadius: 6,
@@ -127,7 +140,7 @@ class _ContratoCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   titulo,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF222222),
@@ -135,17 +148,22 @@ class _ContratoCard extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
-                  color: status == 'Ativo'
-                      ? Color(0xFF3FE18F).withOpacity(0.15)
-                      : Colors.red.withOpacity(0.15),
+                  color: contratoAtivo
+                      ? const Color(0xFF3FE18F).withValues(alpha: 0.15)
+                      : Colors.red.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
                   status,
                   style: TextStyle(
-                    color: status == 'Ativo' ? Color(0xFF3FE18F) : Colors.red,
+                    color: contratoAtivo
+                        ? const Color(0xFF3FE18F)
+                        : Colors.red,
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
                   ),
@@ -153,41 +171,46 @@ class _ContratoCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             descricao,
-            style: TextStyle(fontSize: 14, color: Colors.black87),
+            style: const TextStyle(fontSize: 14, color: Colors.black87),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Row(
             children: [
-              Text('Início', style: TextStyle(color: Colors.black54)),
-              SizedBox(width: 8),
-              Text(inicio, style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Início', style: TextStyle(color: Colors.black54)),
+              const SizedBox(width: 8),
+              Text(inicio, style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
           Row(
             children: [
-              Text('Término', style: TextStyle(color: Colors.black54)),
-              SizedBox(width: 8),
-              Text(termino, style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Término', style: TextStyle(color: Colors.black54)),
+              const SizedBox(width: 8),
+              Text(
+                termino,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ],
           ),
           Row(
             children: [
-              Text('Valor Mensal', style: TextStyle(color: Colors.black54)),
-              SizedBox(width: 8),
+              const Text(
+                'Valor Mensal',
+                style: TextStyle(color: Colors.black54),
+              ),
+              const SizedBox(width: 8),
               Text(
                 valor,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color(0xFF3FE18F),
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
-          Spacer(),
-          // Ícone de excluir contrato removido para clientes
+          const Spacer(),
         ],
       ),
     );
@@ -216,9 +239,12 @@ Widget _buildDrawer(BuildContext context) {
           ),
           ListTile(
             leading: const Icon(Icons.dashboard, color: Colors.white),
-            title: const Text('Dashboard', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+            title: const Text(
+              'Dashboard',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
-              Navigator.pop(context); // Fecha o Drawer
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const HomePage()),
@@ -227,9 +253,12 @@ Widget _buildDrawer(BuildContext context) {
           ),
           ListTile(
             leading: const Icon(Icons.receipt_long, color: Colors.white),
-            title: const Text('Faturas', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+            title: const Text(
+              'Faturas',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
-              Navigator.pop(context); // Fecha o Drawer
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const FaturasPage()),
@@ -238,18 +267,26 @@ Widget _buildDrawer(BuildContext context) {
           ),
           ListTile(
             leading: const Icon(Icons.assignment, color: Colors.white),
-            title: const Text('Contratos', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+            title: const Text(
+              'Contratos',
+              style: TextStyle(color: Colors.white),
+            ),
             onTap: () {
-              Navigator.pop(context); // Fecha o Drawer
+              Navigator.pop(context);
             },
           ),
-          // ListTile de Consumo removido
           const Divider(color: Colors.white24),
           ListTile(
             leading: const Icon(Icons.exit_to_app, color: Colors.white70),
-            title: const Text('Sair', style: TextStyle(color: Colors.white70)),
+            title: const Text(
+              'Sair',
+              style: TextStyle(color: Colors.white70),
+            ),
             onTap: () async {
               await FirebaseAuth.instance.signOut();
+
+              if (!context.mounted) return;
+
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const LoginPage()),
@@ -262,5 +299,3 @@ Widget _buildDrawer(BuildContext context) {
     ),
   );
 }
-
-

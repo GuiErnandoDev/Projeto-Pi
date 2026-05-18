@@ -17,20 +17,30 @@ class _SplashPageState extends State<SplashPage> {
     _checkAuth();
   }
 
-  void _checkAuth() async {
-    await Future.delayed(const Duration(seconds: 2)); // Splash delay
+  Future<void> _checkAuth() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!mounted) return;
+
     if (FirebaseAuth.instance.currentUser != null) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomePage()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginPage()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // ... seu layout da splash ...
-    return Scaffold(
-      body: Center(child: CircularProgressIndicator()),
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

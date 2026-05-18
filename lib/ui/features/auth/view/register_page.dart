@@ -12,7 +12,8 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
-  final TextEditingController _confirmarSenhaController = TextEditingController();
+  final TextEditingController _confirmarSenhaController =
+      TextEditingController();
 
   bool _senhaOculta = true;
   bool _confirmarSenhaOculta = true;
@@ -22,6 +23,58 @@ class _RegisterPageState extends State<RegisterPage> {
   static const Color verdeBotao = Color(0xFFD4E157);
   static const Color textoPrincipal = Color(0xFF131A2D);
   static const Color textoSecundario = Color(0xFF767F8D);
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _senhaController.dispose();
+    _confirmarSenhaController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _registrarUsuario() async {
+    if (_senhaController.text != _confirmarSenhaController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('As senhas não conferem!')),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _senhaController.text.trim(),
+      );
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cadastro realizado com sucesso!')),
+      );
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+        (route) => false,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+
+      String msg = 'Erro ao cadastrar';
+
+      if (e.code == 'email-already-in-use') {
+        msg = 'E-mail já cadastrado';
+      } else if (e.code == 'weak-password') {
+        msg = 'Senha muito fraca';
+      } else if (e.code == 'invalid-email') {
+        msg = 'E-mail inválido';
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(msg)),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +110,11 @@ class _RegisterPageState extends State<RegisterPage> {
                         return const Center(
                           child: Text(
                             'ATIVVO',
-                            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         );
                       },
@@ -68,11 +125,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 Container(
                   padding: const EdgeInsets.all(32),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -158,7 +215,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             onPressed: () {
                               setState(() {
-                                _confirmarSenhaOculta = !_confirmarSenhaOculta;
+                                _confirmarSenhaOculta =
+                                    !_confirmarSenhaOculta;
                               });
                             },
                           ),
@@ -169,38 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            if (_senhaController.text != _confirmarSenhaController.text) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('As senhas não conferem!')),
-                              );
-                              return;
-                            }
-                            try {
-                              await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                                email: _emailController.text.trim(),
-                                password: _senhaController.text.trim(),
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Cadastro realizado com sucesso!')),
-                              );
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(builder: (context) => const HomePage()),
-                                (route) => false,
-                              );
-                            } on FirebaseAuthException catch (e) {
-                              String msg = 'Erro ao cadastrar';
-                              if (e.code == 'email-already-in-use') {
-                                msg = 'E-mail já cadastrado';
-                              } else if (e.code == 'weak-password') {
-                                msg = 'Senha muito fraca';
-                              }
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(msg)),
-                              );
-                            }
-                          },
+                          onPressed: _registrarUsuario,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: verdeBotao,
                             foregroundColor: textoPrincipal,

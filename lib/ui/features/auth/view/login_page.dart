@@ -14,16 +14,60 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
-  // Estados dos inputs
   bool _senhaOculta = true;
-  bool _lembrarSenha = false;
 
-  static const Color azulFundoTopo = Color(0xFF67E6DC); // Ciano claro do degradê
-  static const Color azulFundoBase = Color(0xFFC9F7F1); // Ciano quase branco
-  static const Color verdeBotao = Color(0xFFD4E157);   // Amarelo esverdeado
-  static const Color textoPrincipal = Color(0xFF131A2D); // Quase preto/azul escuro
-  static const Color textoSecundario = Color(0xFF767F8D); // Cinza para labels
-  static const Color azulLink = Color(0xFF3B67D3);       // Azul para links
+  static const Color azulFundoTopo = Color(0xFF67E6DC);
+  static const Color azulFundoBase = Color(0xFFC9F7F1);
+  static const Color verdeBotao = Color(0xFFD4E157);
+  static const Color textoPrincipal = Color(0xFF131A2D);
+  static const Color textoSecundario = Color(0xFF767F8D);
+  static const Color azulLink = Color(0xFF3B67D3);
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _senhaController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _fazerLogin() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _senhaController.text.trim(),
+      );
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login realizado com sucesso!')),
+      );
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+        (route) => false,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+
+      String msg = 'Erro ao fazer login';
+
+      if (e.code == 'user-not-found') {
+        msg = 'Usuário não encontrado';
+      } else if (e.code == 'wrong-password') {
+        msg = 'Senha incorreta';
+      } else if (e.code == 'invalid-email') {
+        msg = 'Email inválido';
+      } else if (e.code == 'invalid-credential') {
+        msg = 'Email ou senha incorretos';
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(msg)),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +92,6 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: [
                 const SizedBox(height: 60),
-
                 Center(
                   child: SizedBox(
                     width: 340,
@@ -60,24 +103,26 @@ class _LoginPageState extends State<LoginPage> {
                         return const Center(
                           child: Text(
                             'ATIVVO',
-                            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         );
                       },
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 50),
-
                 Container(
                   padding: const EdgeInsets.all(32),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -85,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: Column(
                     children: [
-                      Center(
+                      const Center(
                         child: Text(
                           'Login',
                           style: TextStyle(
@@ -96,7 +141,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 32),
-
                       const Text(
                         'Email:',
                         style: TextStyle(
@@ -112,7 +156,6 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: _inputStyle(),
                       ),
                       const SizedBox(height: 20),
-
                       const Text(
                         'Senha:',
                         style: TextStyle(
@@ -142,37 +185,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-
                       SizedBox(
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            try {
-                              final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                                email: _emailController.text.trim(),
-                                password: _senhaController.text.trim(),
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Login realizado com sucesso!')),
-                              );
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(builder: (context) => const HomePage()),
-                                (route) => false,
-                              );
-                            } on FirebaseAuthException catch (e) {
-                              String msg = 'Erro ao fazer login';
-                              if (e.code == 'user-not-found') {
-                                msg = 'Usuário não encontrado';
-                              } else if (e.code == 'wrong-password') {
-                                msg = 'Senha incorreta';
-                              }
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(msg)),
-                              );
-                            }
-                          },
+                          onPressed: _fazerLogin,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: verdeBotao,
                             foregroundColor: textoPrincipal,
@@ -217,9 +234,9 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
-        ),      ),
+        ),
+      ),
     );
-
   }
 
   InputDecoration _inputStyle() {

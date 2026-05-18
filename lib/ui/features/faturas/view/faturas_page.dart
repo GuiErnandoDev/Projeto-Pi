@@ -3,9 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piprojeto/ui/features/home/view/home_page.dart';
 import '../../auth/view/login_page.dart';
 import '../../contratos/view/contratos_page.dart';
-// importação de consumo removida
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:piprojeto/services/firestore_service.dart';
+import 'package:piprojeto/data/services/firestore_service.dart';
 
 class FaturasPage extends StatefulWidget {
   const FaturasPage({super.key});
@@ -15,10 +14,8 @@ class FaturasPage extends StatefulWidget {
 }
 
 class _FaturasPageState extends State<FaturasPage> {
-  final FirestoreService _firestoreService = FirestoreService();
-  String _status = 'Todos';
-  final String? _uid = FirebaseAuth.instance.currentUser?.uid;
-
+  final FirestoreService firestoreService = FirestoreService();
+  final String? uid = FirebaseAuth.instance.currentUser?.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -48,37 +45,35 @@ class _FaturasPageState extends State<FaturasPage> {
             Row(
               children: [
                 Expanded(
-                  child: Container(), // Campo de busca pode ser implementado depois
-                ),
-                const SizedBox(width: 12),
-                DropdownButton<String>(
-                  value: _status,
-                  items: const [
-                    DropdownMenuItem(value: 'Todos', child: Text('Todos')),
-                    DropdownMenuItem(value: 'Pagas', child: Text('Pagas')),
-                    DropdownMenuItem(value: 'Pendente', child: Text('Pendentes')),
-                  ],
-                  onChanged: (v) {
-                    if (v != null) setState(() => _status = v);
-                  },
-                  borderRadius: BorderRadius.circular(12),
+                  child: Container(),
                 ),
               ],
             ),
             const SizedBox(height: 24),
             Expanded(
-              child: _uid == null
+              child: uid == null
                   ? const Center(child: Text('Usuário não autenticado.'))
                   : StreamBuilder<QuerySnapshot>(
-                      stream: _firestoreService.getUserSubcollectionStream(_uid!, 'faturas'),
+                      stream: firestoreService.getUserSubcollectionStream(
+                        uid!,
+                        'faturas',
+                      ),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         }
+
                         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                          return const Center(child: Text('Nenhuma fatura encontrada.'));
+                          return const Center(
+                            child: Text('Nenhuma fatura encontrada.'),
+                          );
                         }
+
                         final docs = snapshot.data!.docs;
+
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
@@ -92,14 +87,29 @@ class _FaturasPageState extends State<FaturasPage> {
                             ],
                             rows: docs.map((doc) {
                               final data = doc.data() as Map<String, dynamic>;
-                              return DataRow(cells: [
-                                DataCell(Text(data['referencia'] ?? '')),
-                                DataCell(Text(data['vencimento'] ?? '')),
-                                DataCell(Text(data['valor']?.toString() ?? '')),
-                                DataCell(Text(data['consumo']?.toString() ?? '')),
-                                DataCell(Text(data['economia']?.toString() ?? '')),
-                                DataCell(Text(data['status'] ?? '')),
-                              ]);
+
+                              return DataRow(
+                                cells: [
+                                  DataCell(
+                                    Text(data['referencia']?.toString() ?? ''),
+                                  ),
+                                  DataCell(
+                                    Text(data['vencimento']?.toString() ?? ''),
+                                  ),
+                                  DataCell(
+                                    Text(data['valor']?.toString() ?? ''),
+                                  ),
+                                  DataCell(
+                                    Text(data['consumo']?.toString() ?? ''),
+                                  ),
+                                  DataCell(
+                                    Text(data['economia']?.toString() ?? ''),
+                                  ),
+                                  DataCell(
+                                    Text(data['status']?.toString() ?? ''),
+                                  ),
+                                ],
+                              );
                             }).toList(),
                           ),
                         );
@@ -111,8 +121,6 @@ class _FaturasPageState extends State<FaturasPage> {
       ),
     );
   }
-
-  // Nenhuma função de adição/exclusão para clientes
 
   Widget _buildDrawer(BuildContext context) {
     return Drawer(
@@ -136,9 +144,12 @@ class _FaturasPageState extends State<FaturasPage> {
             ),
             ListTile(
               leading: const Icon(Icons.dashboard, color: Colors.white),
-              title: const Text('Dashboard', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+              title: const Text(
+                'Dashboard',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {
-                Navigator.pop(context); // Fecha o Drawer
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage()),
@@ -147,29 +158,42 @@ class _FaturasPageState extends State<FaturasPage> {
             ),
             ListTile(
               leading: const Icon(Icons.receipt_long, color: Colors.white),
-              title: const Text('Faturas', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+              title: const Text(
+                'Faturas',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {
-                Navigator.pop(context); // Fecha o Drawer
+                Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.assignment, color: Colors.white),
-              title: const Text('Contratos', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
+              title: const Text(
+                'Contratos',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {
-                Navigator.pop(context); // Fecha o Drawer
+                Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ContratosPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const ContratosPage(),
+                  ),
                 );
               },
             ),
-            // ListTile de Consumo removido
             const Divider(color: Colors.white24),
             ListTile(
               leading: const Icon(Icons.exit_to_app, color: Colors.white70),
-              title: const Text('Sair', style: TextStyle(color: Colors.white70)),
+              title: const Text(
+                'Sair',
+                style: TextStyle(color: Colors.white70),
+              ),
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
+
+                if (!context.mounted) return;
+
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const LoginPage()),
@@ -183,4 +207,3 @@ class _FaturasPageState extends State<FaturasPage> {
     );
   }
 }
-
