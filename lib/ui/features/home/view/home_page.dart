@@ -6,11 +6,16 @@ import 'package:piprojeto/data/services/firestore_service.dart';
 import '../../auth/view/login_page.dart';
 import '../../faturas/view/faturas_page.dart';
 import '../../contratos/view/contratos_page.dart';
+import '../../chat/view/chat_page.dart';
+import '../../perfil/view/perfil_page.dart';
 
+/// Página inicial (dashboard) do app.
+/// Mostra resumo, gráficos, faturas e navegação para outras áreas.
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
+  /// Monta a interface do dashboard, cards de resumo, gráficos e lista de faturas.
   Widget build(BuildContext context) {
     final String? uid = FirebaseAuth.instance.currentUser?.uid;
     final FirestoreService firestoreService = FirestoreService();
@@ -32,6 +37,29 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Botão para acessar o Chat IA
+            Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.chat_bubble_outline),
+                label: const Text('Chat IA'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF1A3D5D),
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  // Chave Gemini fornecida pelo usuário
+                  const geminiApiKey = 'AIzaSyAmWuJsW2rdBF5krsdsnLSal5fLP0Fbi4s';
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ChatPage(apiKey: geminiApiKey),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 8),
             const SizedBox(height: 8),
             if (uid == null)
               Text.rich(
@@ -146,6 +174,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
+/// Drawer lateral de navegação entre as páginas principais do app.
 Widget _buildDrawer(BuildContext context) {
   return Drawer(
     child: Container(
@@ -174,6 +203,20 @@ Widget _buildDrawer(BuildContext context) {
             ),
             onTap: () {
               Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.person, color: Colors.white),
+            title: const Text(
+              'Perfil',
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PerfilPage()),
+              );
             },
           ),
           ListTile(
@@ -229,23 +272,57 @@ Widget _buildDrawer(BuildContext context) {
   );
 }
 
+/// Cards de resumo de consumo e economia total do usuário.
 Widget _buildSummaryCards() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      _buildSummaryCard(
-        'Consumo Total',
-        '39.600 kWh',
-        Icons.flash_on,
-        const Color(0xFF042454),
-      ),
-      _buildSummaryCard(
-        'Economia Total',
-        'R\$ 5.120,00',
-        Icons.trending_down,
-        const Color(0xFF042454),
-      ),
-    ],
+  final String? uid = FirebaseAuth.instance.currentUser?.uid;
+  final FirestoreService firestoreService = FirestoreService();
+
+  if (uid == null) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildSummaryCard('Consumo Total', '0 kWh', Icons.flash_on, const Color(0xFF042454)),
+        _buildSummaryCard('Economia Total', 'R\$ 0,00', Icons.trending_down, const Color(0xFF042454)),
+      ],
+    );
+  }
+
+  return StreamBuilder<QuerySnapshot>(
+    stream: firestoreService.getUserSubcollectionStream(uid, 'faturas'),
+    builder: (context, snapshot) {
+      double totalConsumo = 0;
+      double totalEconomia = 0;
+
+      if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+        for (var doc in snapshot.data!.docs) {
+          final data = doc.data() as Map<String, dynamic>;
+          // Consumo
+          final consumo = data['consumo'];
+          if (consumo is num) {
+            totalConsumo += consumo.toDouble();
+          } else if (consumo is String) {
+            final valor = double.tryParse(consumo.replaceAll(RegExp(r'[^0-9,\.]'), '').replaceAll(',', '.')) ?? 0.0;
+            totalConsumo += valor;
+          }
+          // Economia
+          final economia = data['economia'];
+          if (economia is num) {
+            totalEconomia += economia.toDouble();
+          } else if (economia is String) {
+            final valor = double.tryParse(economia.replaceAll(RegExp(r'[^0-9,\.]'), '').replaceAll(',', '.')) ?? 0.0;
+            totalEconomia += valor;
+          }
+        }
+      }
+
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildSummaryCard('Consumo Total', '${totalConsumo.toStringAsFixed(1)} kWh', Icons.flash_on, const Color(0xFF042454)),
+          _buildSummaryCard('Economia Total', 'R\$ ${totalEconomia.toStringAsFixed(2)}', Icons.trending_down, const Color(0xFF042454)),
+        ],
+      );
+    },
   );
 }
 

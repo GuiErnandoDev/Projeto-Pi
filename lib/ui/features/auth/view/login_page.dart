@@ -3,6 +3,8 @@ import '../../auth/view/register_page.dart';
 import '../../home/view/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+/// Tela de login principal do app.
+/// Permite autenticação do usuário e navegação para registro.
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -10,12 +12,17 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+/// Estado da tela de login, gerencia campos, visibilidade da senha e autenticação.
 class _LoginPageState extends State<LoginPage> {
+  /// Controlador do campo de email.
   final TextEditingController _emailController = TextEditingController();
+  /// Controlador do campo de senha.
   final TextEditingController _senhaController = TextEditingController();
 
+  /// Controla se a senha está oculta ou visível.
   bool _senhaOculta = true;
 
+  // Cores utilizadas na tela
   static const Color azulFundoTopo = Color(0xFF67E6DC);
   static const Color azulFundoBase = Color(0xFFC9F7F1);
   static const Color verdeBotao = Color(0xFFD4E157);
@@ -25,11 +32,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
+    // Libera os controladores ao destruir o widget
     _emailController.dispose();
     _senhaController.dispose();
     super.dispose();
   }
 
+  /// Realiza o login do usuário usando Firebase Auth.
+  /// Exibe mensagens de erro ou sucesso e navega para a Home em caso positivo.
   Future<void> _fazerLogin() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -69,6 +79,8 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  /// Monta a interface da tela de login.
+  /// Inclui campos de email, senha, botão de login e link para registro.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,6 +251,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// Estilização padrão dos campos de texto.
   InputDecoration _inputStyle() {
     return InputDecoration(
       filled: true,

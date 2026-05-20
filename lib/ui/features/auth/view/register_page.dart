@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../home/view/home_page.dart';
 
+
+
+
+/// Tela de registro de novo usuário.
+/// Permite criar conta, preencher dados pessoais e salvar no Firestore.
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -9,11 +15,16 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
+/// Estado da tela de registro, gerencia campos, validação e cadastro.
 class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
-  final TextEditingController _confirmarSenhaController =
-      TextEditingController();
+  final TextEditingController _confirmarSenhaController = TextEditingController();
+  final TextEditingController _telefoneController = TextEditingController();
+  final TextEditingController _cpfCnpjController = TextEditingController();
+  final TextEditingController _enderecoController = TextEditingController();
+  final TextEditingController _unidadeConsumidoraController = TextEditingController();
 
   bool _senhaOculta = true;
   bool _confirmarSenhaOculta = true;
@@ -26,12 +37,18 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
+    _nomeController.dispose();
     _emailController.dispose();
     _senhaController.dispose();
     _confirmarSenhaController.dispose();
+    _telefoneController.dispose();
+    _cpfCnpjController.dispose();
+    _enderecoController.dispose();
+    _unidadeConsumidoraController.dispose();
     super.dispose();
   }
 
+  /// Realiza o cadastro do usuário, salva dados no Firestore e trata erros.
   Future<void> _registrarUsuario() async {
     if (_senhaController.text != _confirmarSenhaController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -41,10 +58,20 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _senhaController.text.trim(),
       );
+
+      // Salva os dados do cliente no Firestore
+      await FirebaseFirestore.instance.collection('clientes').doc(cred.user!.uid).set({
+        'nome': _nomeController.text.trim(),
+        'email': _emailController.text.trim(),
+        'telefone': _telefoneController.text.trim(),
+        'cpfCnpj': _cpfCnpjController.text.trim(),
+        'endereco': _enderecoController.text.trim(),
+        'unidadeConsumidora': _unidadeConsumidoraController.text.trim(),
+      });
 
       if (!mounted) return;
 
@@ -150,6 +177,81 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       const SizedBox(height: 32),
                       const Text(
+                        'Nome:',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: textoSecundario,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _nomeController,
+                        keyboardType: TextInputType.text,
+                        decoration: _inputStyle(),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Telefone:',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: textoSecundario,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _telefoneController,
+                        keyboardType: TextInputType.phone,
+                        decoration: _inputStyle(),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'CPF/CNPJ:',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: textoSecundario,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _cpfCnpjController,
+                        keyboardType: TextInputType.text,
+                        decoration: _inputStyle(),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Endereço:',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: textoSecundario,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _enderecoController,
+                        keyboardType: TextInputType.text,
+                        decoration: _inputStyle(),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Unidade Consumidora:',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: textoSecundario,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _unidadeConsumidoraController,
+                        keyboardType: TextInputType.text,
+                        decoration: _inputStyle(),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
                         'Email:',
                         style: TextStyle(
                           fontSize: 14,
@@ -215,8 +317,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             onPressed: () {
                               setState(() {
-                                _confirmarSenhaOculta =
-                                    !_confirmarSenhaOculta;
+                                _confirmarSenhaOculta = !_confirmarSenhaOculta;
                               });
                             },
                           ),

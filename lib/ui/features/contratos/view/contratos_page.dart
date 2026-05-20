@@ -5,11 +5,15 @@ import 'package:piprojeto/data/services/firestore_service.dart';
 import '../../auth/view/login_page.dart';
 import '../../home/view/home_page.dart';
 import '../../faturas/view/faturas_page.dart';
+import '../../perfil/view/perfil_page.dart';
 
+/// Tela de contratos do usuário.
+/// Exibe lista de contratos ativos e encerrados.
 class ContratosPage extends StatelessWidget {
   const ContratosPage({super.key});
 
   @override
+  /// Monta a interface da tela de contratos, mostrando lista de contratos do usuário.
   Widget build(BuildContext context) {
     final String? uid = FirebaseAuth.instance.currentUser?.uid;
     final FirestoreService firestoreService = FirestoreService();
@@ -95,6 +99,7 @@ class ContratosPage extends StatelessWidget {
   }
 }
 
+/// Card visual para exibir informações de um contrato.
 class _ContratoCard extends StatelessWidget {
   final String titulo;
   final String descricao;
@@ -113,6 +118,7 @@ class _ContratoCard extends StatelessWidget {
   });
 
   @override
+  /// Monta o card visual do contrato.
   Widget build(BuildContext context) {
     final bool contratoAtivo = status == 'Ativo';
 
@@ -217,6 +223,7 @@ class _ContratoCard extends StatelessWidget {
   }
 }
 
+/// Drawer lateral de navegação entre as páginas principais do app.
 Widget _buildDrawer(BuildContext context) {
   return Drawer(
     child: Container(
@@ -248,6 +255,20 @@ Widget _buildDrawer(BuildContext context) {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.person, color: Colors.white),
+            title: const Text(
+              'Perfil',
+              style: TextStyle(color: Colors.white),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PerfilPage()),
               );
             },
           ),

@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import '../ui/features/home/view/home_page.dart';
 import '../ui/features/faturas/view/faturas_page.dart';
 import '../ui/features/contratos/view/contratos_page.dart';
+import '../ui/features/perfil/view/perfil_page.dart';
 
 class AppRoutes {
   static const String home = '/';
   static const String faturas = '/faturas';
   static const String contratos = '/contratos';
+  static const String perfil = '/perfil';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -18,6 +20,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const FaturasPage());
       case contratos:
         return MaterialPageRoute(builder: (_) => const ContratosPage());
+      case perfil:
+        return MaterialPageRoute(builder: (_) => const PerfilPage());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
