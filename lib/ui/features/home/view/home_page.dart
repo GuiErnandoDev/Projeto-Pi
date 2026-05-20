@@ -6,6 +6,7 @@ import 'package:piprojeto/data/services/firestore_service.dart';
 import '../../auth/view/login_page.dart';
 import '../../faturas/view/faturas_page.dart';
 import '../../contratos/view/contratos_page.dart';
+import '../../perfil/view/page.perfil.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -203,7 +204,21 @@ Widget _buildDrawer(BuildContext context) {
                 MaterialPageRoute(builder: (context) => const ContratosPage()),
               );
             },
-          ),
+          ),  
+          ListTile(
+  leading: const Icon(Icons.person, color: Colors.white),
+  title: const Text(
+    'Perfil',
+    style: TextStyle(color: Colors.white),
+  ),
+  onTap: () {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PerfilPage()),
+    );
+  },
+),
           const Divider(color: Colors.white24),
           ListTile(
             leading: const Icon(Icons.exit_to_app, color: Colors.white70),

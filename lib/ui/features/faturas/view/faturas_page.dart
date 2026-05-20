@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piprojeto/ui/features/home/view/home_page.dart';
 import '../../auth/view/login_page.dart';
 import '../../contratos/view/contratos_page.dart';
+import '../../perfil/view/page.perfil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piprojeto/data/services/firestore_service.dart';
 
@@ -40,18 +41,6 @@ class _FaturasPageState extends State<FaturasPage> {
             const Text(
               'Visualize suas faturas mensais',
               style: TextStyle(color: Colors.black54),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-
-    
-
-                  child: Container(), // Campo de busca pode ser implementado depois
-
-                ),
-              ],
             ),
             const SizedBox(height: 24),
             Expanded(
@@ -186,6 +175,34 @@ class _FaturasPageState extends State<FaturasPage> {
                 );
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.person, color: Colors.white),
+              title: const Text(
+                'Perfil',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PerfilPage()),
+                );
+              },
+            ),
+            ListTile(
+  leading: const Icon(Icons.person, color: Colors.white),
+  title: const Text(
+    'Perfil',
+    style: TextStyle(color: Colors.white),
+  ),
+  onTap: () {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PerfilPage()),
+    );
+  },
+),
             const Divider(color: Colors.white24),
             ListTile(
               leading: const Icon(Icons.exit_to_app, color: Colors.white70),
