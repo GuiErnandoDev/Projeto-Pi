@@ -9,14 +9,14 @@ void main() {
   });
 
   group('FaturasViewModel', () {
-    test('Adiciona fatura e calcula total', () {
+    test('TC02 — Adiciona fatura e calcula total', () {
       viewModel.adicionarFatura(Fatura(referencia: '2024-01', valor: 100.0, status: 'Paga'));
       viewModel.adicionarFatura(Fatura(referencia: '2024-02', valor: 200.0, status: 'Pendente'));
       expect(viewModel.faturas.length, 2);
       expect(viewModel.total, 300.0);
     });
 
-    test('Conta faturas pagas e pendentes', () {
+    test('TC03 — Conta faturas pagas e pendentes', () {
       viewModel.adicionarFatura(Fatura(referencia: '2024-01', valor: 100.0, status: 'Paga'));
       viewModel.adicionarFatura(Fatura(referencia: '2024-02', valor: 200.0, status: 'Pendente'));
       viewModel.adicionarFatura(Fatura(referencia: '2024-03', valor: 50.0, status: 'Pendente'));

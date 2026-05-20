@@ -246,7 +246,21 @@ Widget _buildDrawer(BuildContext context) {
                 MaterialPageRoute(builder: (context) => const ContratosPage()),
               );
             },
-          ),
+          ),  
+          ListTile(
+  leading: const Icon(Icons.person, color: Colors.white),
+  title: const Text(
+    'Perfil',
+    style: TextStyle(color: Colors.white),
+  ),
+  onTap: () {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PerfilPage()),
+    );
+  },
+),
           const Divider(color: Colors.white24),
           ListTile(
             leading: const Icon(Icons.exit_to_app, color: Colors.white70),

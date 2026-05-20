@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:piprojeto/ui/features/home/view/home_page.dart';
 import '../../auth/view/login_page.dart';
 import '../../contratos/view/contratos_page.dart';
+// Removido import duplicado e incorreto
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:piprojeto/data/services/firestore_service.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -50,17 +51,23 @@ class _FaturasPageState extends State<FaturasPage> {
         ),
       );
       await Printing.layoutPdf(onLayout: (format) async => pdf.save());
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('PDF gerado/compartilhado com sucesso!')),
-        );
-      }
+      if (!mounted) return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('PDF gerado/compartilhado com sucesso!')),
+          );
+        }
+      });
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao gerar PDF: $e')),
-        );
-      }
+      if (!mounted) return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erro ao gerar PDF: $e')),
+          );
+        }
+      });
     }
   }
 
@@ -113,7 +120,7 @@ class _FaturasPageState extends State<FaturasPage> {
                         });
                         return ListView.separated(
                           itemCount: docs.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 16),
+                          separatorBuilder: (_, _) => const SizedBox(height: 16),
                           itemBuilder: (context, index) {
                             final data = docs[index].data() as Map<String, dynamic>;
                             final status = (data['status'] ?? '').toString().toLowerCase();
@@ -146,7 +153,7 @@ class _FaturasPageState extends State<FaturasPage> {
                                         Container(
                                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                           decoration: BoxDecoration(
-                                            color: statusColor.withOpacity(0.15),
+                                            color: statusColor.withValues(alpha: 0.15),
                                             borderRadius: BorderRadius.circular(12),
                                           ),
                                           child: Text(
@@ -225,20 +232,7 @@ class _FaturasPageState extends State<FaturasPage> {
                 );
               },
             ),
-            ListTile(
-            leading: const Icon(Icons.person, color: Colors.white),
-            title: const Text(
-              'Perfil',
-              style: TextStyle(color: Colors.white),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const PerfilPage()),
-              );
-            },
-          ),
+            // Removido ListTile duplicado de Perfil
             ListTile(
               leading: const Icon(Icons.receipt_long, color: Colors.white),
               title: const Text(
@@ -265,6 +259,34 @@ class _FaturasPageState extends State<FaturasPage> {
                 );
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.person, color: Colors.white),
+              title: const Text(
+                'Perfil',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PerfilPage()),
+                );
+              },
+            ),
+            ListTile(
+  leading: const Icon(Icons.person, color: Colors.white),
+  title: const Text(
+    'Perfil',
+    style: TextStyle(color: Colors.white),
+  ),
+  onTap: () {
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PerfilPage()),
+    );
+  },
+),
             const Divider(color: Colors.white24),
             ListTile(
               leading: const Icon(Icons.exit_to_app, color: Colors.white70),

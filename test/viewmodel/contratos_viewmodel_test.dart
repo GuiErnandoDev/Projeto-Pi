@@ -9,7 +9,7 @@ void main() {
   });
 
   group('ContratosViewModel', () {
-    test('Adiciona contrato e conta ativos/inativos', () {
+    test('TC01 — Adiciona contrato e conta ativos/inativos', () {
       viewModel.adicionarContrato(Contrato(nome: 'Contrato 1', status: 'Ativo'));
       viewModel.adicionarContrato(Contrato(nome: 'Contrato 2', status: 'Inativo'));
       viewModel.adicionarContrato(Contrato(nome: 'Contrato 3', status: 'Ativo'));
